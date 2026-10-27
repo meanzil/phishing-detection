@@ -1,4 +1,6 @@
 streamlit>=1.40
 tldextract>=5.1
 mcp[cli]>=1.28,<2
+openai>=1.50
+python-dotenv>=1.0
 pytest>=8.0
