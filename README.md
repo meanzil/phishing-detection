@@ -94,6 +94,34 @@ To use AI, enter an email and check the consent box explaining that the subject,
 
 The dashboard needs the local MCP server running for cloud AI analysis. The one-command launcher starts both. Starting an MCP server does not itself start or call a language model.
 
+## Troubleshooting MCP or dashboard startup
+
+Use the same terminal and Python environment for every command. On Windows, run these from the repository folder with the virtual environment activated:
+
+```powershell
+python --version
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python -c "from mcp import ClientSession; from mcp.client.streamable_http import streamable_http_client; from mcp.server.fastmcp import FastMCP; import streamlit, openai, dotenv; print('Dependency imports OK')"
+python -m pytest -q
+python run.py
+```
+
+The project uses MCP SDK 1.x (minimum 1.30) to match its FastMCP server and HTTP client APIs. Reinstall dependencies after pulling updates; do not install an unrelated MCP 2.x version into this environment.
+
+Common errors:
+
+- `ModuleNotFoundError` for `mcp`, `streamlit`, `openai`, or `dotenv`: activate the project's virtual environment, then run `python -m pip install -r requirements.txt`.
+- `Address already in use` or a message about port 8000: stop the older MCP process, or close the application using port 8000. Port 8501 must also be free for the dashboard.
+- Dashboard shows an MCP connection error: keep `python run.py` running and confirm `MCP_SERVER_URL=http://127.0.0.1:8000/mcp` in `.env`.
+- HTTP 401 from Ollama Cloud: the API key is missing, invalid, or copied incorrectly. Replace it in local `.env`, then fully stop and restart the app.
+- HTTP 403: verify Ollama account/model access.
+- HTTP 404: verify `OLLAMA_BASE_URL=https://ollama.com/v1` and set `OLLAMA_MODEL` to a model available to your account.
+- HTTP 429: check the Ollama Cloud account's usage or rate limits.
+- Local-only analysis works but cloud AI fails: that usually means the dashboard and local rules loaded successfully; focus on MCP connectivity or Ollama Cloud configuration shown by the error message.
+
+Do not paste your API key or private email contents into an issue. If the error remains, share the full terminal traceback and the exact dashboard error text after removing any secrets.
+
 ## Project files
 
 - `app.py`: Streamlit dashboard and AI consent flow
