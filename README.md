@@ -96,6 +96,8 @@ The dashboard needs the local MCP server running for cloud AI analysis. The one-
 
 ## Troubleshooting MCP or dashboard startup
 
+**Important:** Do not test the MCP endpoint by opening `http://127.0.0.1:8000/mcp` directly in a normal browser tab. A browser sends a normal webpage `Accept` header rather than the MCP-required `text/event-stream` header, so the endpoint can correctly respond with `Not Acceptable: Client must accept text/event-stream`. This is not, by itself, proof that the MCP server is broken. Use the Streamlit dashboard at `http://127.0.0.1:8501`; its MCP client sends protocol headers. If clicking **Analyze email** shows this error inside the dashboard too, update dependencies with `python -m pip install --upgrade -r requirements.txt`, restart `python run.py`, and inspect the terminal traceback.
+
 Use the same terminal and Python environment for every command. On Windows, run these from the repository folder with the virtual environment activated:
 
 ```powershell
