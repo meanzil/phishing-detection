@@ -2,7 +2,9 @@
 
 Starter project using Python, MCP, and Streamlit to inspect phishing indicators. The heuristic score is not a calibrated probability and can produce false positives and false negatives.
 
-## Setup
+## Quick start — one command
+
+After cloning the repository, run these commands once to create the environment and install dependencies:
 
 ```bash
 python -m venv venv
@@ -11,12 +13,26 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
-Run the detector with `python main.py`, the dashboard with `streamlit run app.py`, or the MCP server with `python mcp_server.py`.
+Then start the **MCP HTTP server and Streamlit dashboard together** with:
 
-The MCP server exposes tools over stdio and must be launched by an MCP-compatible client; it does not itself call an LLM. The Streamlit app currently uses the rule-based detector directly. A complete MCP-compatible client that connects tool results to an LLM is a future integration step.
+```bash
+python run.py
+```
+
+Open the dashboard at http://127.0.0.1:8501. The MCP endpoint is http://127.0.0.1:8000/mcp. Press Ctrl+C in the terminal to stop both processes. Ensure ports 8000 and 8501 are available.
+
+## Run components separately
+
+- Command-line example: `python main.py`
+- Dashboard only: `streamlit run app.py`
+- MCP server over stdio (for desktop MCP hosts): `python mcp_server.py`
+- MCP server over HTTP: `python mcp_server.py --http`
+
+The current dashboard uses the rule-based detector directly. A complete MCP-compatible client that sends tool results to an LLM is a future integration step; starting the MCP server does not itself make the dashboard call Ollama.
 
 ## Files
 
+- `run.py`: one-command launcher for MCP HTTP server and dashboard
 - `detector.py`: heuristic email and URL analysis
 - `mcp_server.py`: MCP tools for email and URL inspection
 - `app.py`: Streamlit dashboard
