@@ -1,4 +1,4 @@
 streamlit>=1.40
 tldextract>=5.1
-mcp[cli]>=1.0
+mcp[cli]>=1.28,<2
 pytest>=8.0
